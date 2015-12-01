@@ -1,0 +1,17 @@
+.double {
+    font-size: 200%;
+}
+
+input {
+    font-size: 100%;
+}
+
+.center {
+    margin-left: auto;
+    margin-right: auto;
+    width: 90%;
+}
+
+button {
+    font-size: 100%;
+}
