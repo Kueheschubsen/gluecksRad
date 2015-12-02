@@ -9,20 +9,41 @@
 <script type="text/javascript">
 // Begin my Javascript
 function enterTeams() {
-  eins = document.getElementById('einsBox').value;
-  zwei = document.getElementById('zweiBox').value;
-  document.getElementById('teamDiv').innerHTML =
-    "<table class='center'><tr><th><span id='einsTeam' onclick='increment(1);'>"
-    + eins +  "</span></th><th><span id='zweiTeam' onclick='increment(2);'>"
-    + zwei + "</th></tr>"
-    + "<tr><td align='center'><span id='einsScore'>0</span></td>"
-    + "<td align='center'><span id='zweiScore'>0</span></td></tr>"
-    + "<tr><td align='center' colspan=2><input type='text' id='winnings' "
-    + "size=10></td></tr><tr><td align='center' colspan=2>"
-    + "<button type='button' onclick='reset();'>Reset</button></td></tr>"
-    + "<tr><td align='center' colspan=2><a href='regeln.html'>Regeln</a>"
-    + "</td></tr></table>";
-} // enterTeams
+   var eins = document.getElementById('einsBox').value;
+   var zwei = document.getElementById('zweiBox').value;
+   puzzle = document.getElementById('puzzle').value;
+   var letter;
+   var category = document.getElementById('categoryName').value;
+   document.getElementById('teamDiv').innerHTML =
+   "<table><tr><th><span id='einsTeam' onclick='increment(1);'>"
+   + eins +  "</span></th><th><span id='zweiTeam' onclick='increment(2);'>"
+   + zwei + "</th></tr>"
+   + "<tr><td align='center'><span id='einsScore'>0</span></td>"
+   + "<td align='center'><span id='zweiScore'>0</span></td></tr>"
+   + "<tr><td align='center' colspan=2><input type='text' id='winnings' "
+   + "size=10></td></tr><tr><td align='center' colspan=2>"
+   + "<button type='button' onclick='reset();'>Reset</button></td></tr>"
+   + "<tr><td align='center' colspan=2><a href='regeln.html'>Regeln</a>"
+   + "</td></tr></table>";
+   document.getElementById('hangman').innerHTML = "";
+   for (i = 0; i < puzzle.length; i++) {
+     letter = puzzle.charAt(i);
+     letter = letter === " "?"":"_";
+     document.getElementById('hangman').innerHTML =
+       document.getElementById('hangman').innerHTML
+       + "<button id='" + i + "' type = 'button' "
+       + "onclick='display(this.id)'>" + letter
+       + "</button>"
+   } // for
+  document.getElementById('hangman').innerHTML =
+       document.getElementById('hangman').innerHTML
+   + "</br>" + category;
+ } // enterTeams
+
+function display(index) {
+  letter = puzzle.charAt(index);
+  document.getElementById(index).innerHTML = letter;
+}
 
 function increment(team) {
   var current,amount;
@@ -347,9 +368,19 @@ window.onload = function() {
 <body>
 <h1 align="center">Gl&uuml;cksrad</h1>
 
-<div class="center" id="wheel">
+<div id="wheel">
 <canvas id="canvas" width="1000" height="600"></canvas>
 </div>
+
+<!--
+ !-- <div id="hangman">
+ !-- <button class="double" id="0" type="button" onclick="display(this.id)" size=10>_</button>
+ !-- <button class="double" id="1" type="button" onclick="display(this.id)" size=10>_</button>
+ !-- <button class="double" id="2" type="button" onclick="display(this.id)" size=10>_</button>
+ !-- <button class="double" id="3" type="button" onclick="display(this.id)" size=10>_</button>
+ !-- </div>
+-->
+
 
 <div class="double" class="center" id="teamDiv">
 <table>
@@ -363,8 +394,20 @@ window.onload = function() {
 <td><input type="text" id="zweiBox" size=10></td>
 <td>&nbsp;</td>
 </tr>
+<tr>
+<td>Kategorie</td>
+<td><input type="text" id="categoryName" size=10></td>
+<td>&nbsp;</td>
+</tr>
+<tr>
+<td>R&auml;tsel:&nbsp;</td>
+<td><input type="text" id="puzzle" size=10></td>
+<td>&nbsp;</td>
+</tr>
 </table>
 </div>
+
+<div class="double" id="hangman"></div>
 
 </body>
 
