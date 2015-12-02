@@ -3,6 +3,7 @@
 <html>
 <head>
 <title>Gl&uuml;cksrad</title>
+<meta charset="UTF-8">
 <link href="wheel.css" type="text/css" rel="stylesheet">
 <script type="text/javascript" src="lib/jquery/jquery-1.6.2.min.js"></script>
 <script type="text/javascript" src="lib/jquery/jquery.tinysort.js"></script>
@@ -28,7 +29,13 @@ function enterTeams() {
    document.getElementById('hangman').innerHTML = "";
    for (i = 0; i < puzzle.length; i++) {
      letter = puzzle.charAt(i);
-     letter = letter === " "?"":"_";
+     if (letter === " ") {
+       letter ="␣";
+     } else if (letter === "-") {
+       letter = "-";
+     } else {
+       letter = "_";
+     }
      document.getElementById('hangman').innerHTML =
        document.getElementById('hangman').innerHTML
        + "<button id='" + i + "' type = 'button' "
@@ -366,21 +373,9 @@ window.onload = function() {
 </head>
 
 <body>
-<h1 align="center">Gl&uuml;cksrad</h1>
-
 <div id="wheel">
 <canvas id="canvas" width="1000" height="600"></canvas>
-</div>
-
-<!--
- !-- <div id="hangman">
- !-- <button class="double" id="0" type="button" onclick="display(this.id)" size=10>_</button>
- !-- <button class="double" id="1" type="button" onclick="display(this.id)" size=10>_</button>
- !-- <button class="double" id="2" type="button" onclick="display(this.id)" size=10>_</button>
- !-- <button class="double" id="3" type="button" onclick="display(this.id)" size=10>_</button>
- !-- </div>
--->
-
+</div> <!-- wheel -->
 
 <div class="double" class="center" id="teamDiv">
 <table>
@@ -405,7 +400,7 @@ window.onload = function() {
 <td>&nbsp;</td>
 </tr>
 </table>
-</div>
+</div> <!-- teamDiv -->
 
 <div class="double" id="hangman"></div>
 
