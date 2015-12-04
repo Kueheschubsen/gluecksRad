@@ -13,6 +13,7 @@ function enterTeams() {
    var eins = document.getElementById('einsBox').value;
    var zwei = document.getElementById('zweiBox').value;
    puzzle = document.getElementById('puzzle').value;
+   var alphabet = "abcdefghijklmnopqrstuvwxyzäöüẞ";
    var letter;
    var category = document.getElementById('categoryName').value;
    document.getElementById('teamDiv').innerHTML =
@@ -30,7 +31,7 @@ function enterTeams() {
    for (i = 0; i < puzzle.length; i++) {
      letter = puzzle.charAt(i);
      if (letter === " ") {
-       letter ="␣";
+       letter = "&nbsp;";
      } else if (letter === "-") {
        letter = "-";
      } else {
@@ -45,7 +46,19 @@ function enterTeams() {
   document.getElementById('hangman').innerHTML =
        document.getElementById('hangman').innerHTML
    + "</br>" + category + "</br>";
+   for (i = 0; i < 30; i++) {
+     letter = alphabet.charAt(i);
+     document.getElementById('hangman').innerHTML =
+       document.getElementById('hangman').innerHTML
+       + "<button id='" + letter + "' type = 'button' "
+       + "onclick='crossOut(this.id)'>" + letter
+       + "</button>";
+   }
  } // enterTeams
+
+function crossOut(id) {
+  document.getElementById(id).innerHTML = "*";
+}
 
 function display(index) {
   letter = puzzle.charAt(index);
