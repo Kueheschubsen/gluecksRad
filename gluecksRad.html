@@ -1,5 +1,4 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
-"http://www.w3.org/TR/html4/loose.dtd">
+<!doctype html>
 <html>
 <head>
 <title>Gl&uuml;cksrad</title>
@@ -7,16 +6,18 @@
 <link href="wheel.css" type="text/css" rel="stylesheet">
 <script type="text/javascript" src="lib/jquery/jquery-1.6.2.min.js"></script>
 <script type="text/javascript" src="lib/jquery/jquery.tinysort.js"></script>
+<script type="text/javascript" src="lib/db.js"></script>
 <script type="text/javascript">
-// Begin my Javascript
+// Begin my Javascript/jQuery
 function enterTeams() {
-   var eins = document.getElementById('einsBox').value;
-   var zwei = document.getElementById('zweiBox').value;
-   puzzle = document.getElementById('puzzle').value;
+   var eins = $('#einsBox').val();
+   var zwei = $('#zweiBox').val();
+   var puzzleNum = $('#puzzleNum').val();
+   var categoryNum = $('input[name=categoryName]:checked').val();
+   puzzle = category[categoryNum][puzzleNum-1]; // global
    var alphabet = "abcdefghijklmnopqrstuvwxyzäöüẞ";
    var letter;
-   var category = document.getElementById('categoryName').value;
-   document.getElementById('teamDiv').innerHTML =
+   $('#teamDiv').html(
    "<table><tr><th><span id='einsTeam' onclick='increment(1);'>"
    + eins +  "</span></th><th><span id='zweiTeam' onclick='increment(2);'>"
    + zwei + "</th></tr>"
@@ -25,9 +26,9 @@ function enterTeams() {
    + "<tr><td align='center' colspan=2><input type='text' id='winnings' "
    + "size=10></td></tr><tr><td align='center' colspan=2>"
    + "<button type='button' onclick='reset();'>Reset</button></td></tr>"
-   + "<tr><td align='center' colspan=2><a href='regeln.html'>Regeln</a>"
-   + "</td></tr></table>";
-   document.getElementById('hangman').innerHTML = "";
+   + "<tr><td align='center' colspan=2><a target='_blank' href='regeln.html'>Regeln</a>"
+   + "</td></tr></table>");
+   $('#hangman').html("");
    for (i = 0; i < puzzle.length; i++) {
      letter = puzzle.charAt(i);
      if (letter === " ") {
@@ -37,62 +38,63 @@ function enterTeams() {
      } else {
        letter = "_";
      }
-     document.getElementById('hangman').innerHTML =
-       document.getElementById('hangman').innerHTML
-       + "<button id='" + i + "' type = 'button' "
-       + "onclick='display(this.id)'>" + letter
-       + "</button>"
+     $('#hangman').html(
+       $('#hangman').html()
+         + "<button id='" + i + "' type = 'button' "
+         + "onclick='display(this.id)'>" + letter
+         + "</button>");
    } // for
-  document.getElementById('hangman').innerHTML =
-       document.getElementById('hangman').innerHTML
-   + "</br>" + category + "</br>";
-   for (i = 0; i < 30; i++) {
-     letter = alphabet.charAt(i);
-     document.getElementById('hangman').innerHTML =
-       document.getElementById('hangman').innerHTML
+  $('#hangman').html(
+    $('#hangman').html()
+      + "</br>" + categoryNames[categoryNum] + "</br>");
+    for (i = 0; i < 30; i++) {
+      letter = alphabet.charAt(i);
+      $('#hangman').html(
+        $('#hangman').html()
        + "<button id='" + letter + "' type = 'button' "
        + "onclick='crossOut(this.id)'>" + letter
-       + "</button>";
-   }
+          + "</button>");
+    }
  } // enterTeams
 
 function crossOut(id) {
-  document.getElementById(id).innerHTML = "*";
+  $('#' + id).html("*");
 }
 
 function display(index) {
   letter = puzzle.charAt(index);
-  document.getElementById(index).innerHTML = letter;
+  $('#' + index).html(letter);
 }
 
 function increment(team) {
   var current,amount;
-  var won = parseFloat(document.getElementById('winnings').value);
+  var won = parseFloat($('#winnings').val());
   if (team == 1) {
-    current = parseFloat(document.getElementById('einsScore').innerHTML);
+    current = parseFloat($('#einsScore').html());
     amount = current + won;
-    document.getElementById('einsScore').innerHTML = amount;
-    if (isNaN(document.getElementById('einsScore').innerHTML)) {
-      document.getElementById('einsScore').innerHTML = current;
+    $('#einsScore').html(amount);
+    if (isNaN($('#einsScore').html())) {
+      $('#einsScore').html(current);
     }
   } else { // team == 2
-    current = parseFloat(document.getElementById('zweiScore').innerHTML);
+    current = parseFloat($('#zweiScore').html());
     amount = current + won;
-    document.getElementById('zweiScore').innerHTML = amount;
-    if (isNaN(document.getElementById('zweiScore').innerHTML)) {
-      document.getElementById('zweiScore').innerHTML = current;
+    $('#zweiScore').html(amount);
+    if (isNaN($('#zweiScore').html())) {
+      $('#zweiScore').html(current);
     }
   }
-  document.getElementById('winnings').value = "";
+    $('#winnings').val("");
 } // increment
 
 function reset() {
-  document.getElementById('einsScore').innerHTML = 0;
-  document.getElementById('zweiScore').innerHTML = 0;
+  $('#einsScore').html(0);
+  $('#zweiScore').html(0);
 } // reset
-// End my Javascript
+// End my Javascript/jQuery
 </script>
 
+<!--Begin stolen code -->
 <script type="text/javascript">
 // Helpers
   shuffle = function(o) {
@@ -396,22 +398,30 @@ window.onload = function() {
 <tr>
 <td>Team Eins:&nbsp;</td>
 <td><input type="text" id="einsBox" size=10></td>
-<td><button type="submit" onclick="enterTeams();">Eingeben</button></td>
 </tr>
 <tr>
 <td>Team Zwei:&nbsp;</td>
 <td><input type="text" id="zweiBox" size=10></td>
-<td>&nbsp;</td>
 </tr>
 <tr>
-<td>Kategorie</td>
-<td><input type="text" id="categoryName" size=10></td>
-<td>&nbsp;</td>
+<td>Kategorie:</td>
+<td>
+<input type="radio" name="categoryName" value="0">Was machst du?<br>
+<input type="radio" name="categoryName" value="1">Berühmte Deutschsprechende<br>
+<input type="radio" name="categoryName" value="2">Ein Ort<br>
+<input type="radio" name="categoryName" value="3">Speise und Getränke<br>
+<input type="radio" name="categoryName" value="4">Sehenswürdigkeiten
+</td>
 </tr>
 <tr>
-<td>R&auml;tsel:&nbsp;</td>
-<td><input type="text" id="puzzle" size=10></td>
+<td>R&auml;tselnummer:&nbsp;</td>
+<td>
+<input type="number"id="puzzleNum" min="1" step="1">
+</td>
+</tr>
+<tr>
 <td>&nbsp;</td>
+<td><button type="submit" onclick="enterTeams();">Eingeben</button></td>
 </tr>
 </table>
 </div> <!-- teamDiv -->
