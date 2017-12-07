@@ -1,2 +1,8 @@
 wheel.mp3
 lib/
+*aux
+*log
+*ltx
+*pdf
+*gz
+auto/

@@ -7,8 +7,14 @@
 <script type="text/javascript" src="lib/jquery/jquery-1.6.2.min.js"></script>
 <script type="text/javascript" src="lib/jquery/jquery.tinysort.js"></script>
 <script type="text/javascript" src="db.js"></script>
+<script type="text/javascript"src="lib/jquery/js.cookie.js"></script>
 <script type="text/javascript">
 // Begin my Javascript/jQuery
+function getTeams() {
+  $('#einsBox').val(localStorage.getItem('eins'));
+  $('#zweiBox').val(localStorage.getItem('zwei'));
+}
+
 function enterTeams() {
    var eins = $('#einsBox').val();
    var zwei = $('#zweiBox').val();
@@ -17,6 +23,9 @@ function enterTeams() {
    puzzle = category[categoryNum][puzzleNum-1]; // global
    var alphabet = "abcdefghijklmnopqrstuvwxyzäöüẞ";
    var letter;
+   // Remember team names
+   localStorage.setItem("eins",eins);
+   localStorage.setItem("zwei",zwei);
    $('#teamDiv').html(
    "<table><tr><th><span id='einsTeam' onclick='increment(1);'>"
    + eins +  "</span></th><th><span id='zweiTeam' onclick='increment(2);'>"
@@ -25,7 +34,7 @@ function enterTeams() {
    + "<td align='center'><span id='zweiScore'>0</span></td></tr>"
    + "<tr><td align='center' colspan=2><input type='text' id='winnings' "
    + "size=10></td></tr><tr><td align='center' colspan=2>"
-   + "<button type='button' onclick='reset();'>Reset</button></td></tr>"
+   + "<button type='button' onclick='reset();'>Rücksetzen</button></td></tr>"
    + "<tr><td align='center' colspan=2><a target='_blank' href='regeln.html'>Regeln</a>"
    + "</td></tr></table>");
    $('#hangman').html("");
@@ -46,7 +55,7 @@ function enterTeams() {
    } // for
   $('#hangman').html(
     $('#hangman').html()
-      + "</br>" + categoryNames[categoryNum] + "</br>");
+      + "</br>" + categoryNames[categoryNum] + " " + puzzleNum + "</br>");
     for (i = 0; i < 30; i++) {
       letter = alphabet.charAt(i);
       $('#hangman').html(
@@ -84,7 +93,7 @@ function increment(team) {
       $('#zweiScore').html(current);
     }
   }
-    $('#winnings').val("");
+  $('#winnings').val("");
 } // increment
 
 function reset() {
@@ -369,7 +378,7 @@ window.onload = function() {
     "900\u20AC",
     "800\u20AC",
     "500\u20AC",
-    "Versuch verlieren",
+    "Aussetzen",
     "700\u20AC",
     "300\u20AC",
     "650\u20AC",
@@ -389,9 +398,9 @@ window.onload = function() {
 
 <body>
 <div id="wheel">
-<!--<canvas id="canvas" width="1000" height="600"></canvas>-->
+<!-- <canvas id="canvas" width="1000" height="600"></canvas> -->
 <canvas id="canvas" width="900" height="600"></canvas>
-</div> <!-- wheel -->
+</div>
 
 <div class="double" class="center" id="teamDiv">
 <table>
@@ -424,9 +433,13 @@ window.onload = function() {
 <td><button type="submit" onclick="enterTeams();">Eingeben</button></td>
 </tr>
 </table>
-</div> <!-- teamDiv -->
+</div>
 
 <div class="double" id="hangman"></div>
+
+<script type="text/javascript">
+  getTeams();
+</script>
 
 </body>
 
